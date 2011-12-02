@@ -83,6 +83,16 @@ exports.createClient = function(config){
         cb(r.statusCode, JSON.parse(b))
       })
     },
+    
+    /** Generate a request which is returned so it can be .pipe()'d */
+    put_request: function(path, options, cb){
+      var params = sign(options)
+      var args = {
+        "method": "PUT",
+        "url": "https://api-content.dropbox.com/1/files_put/" + (params.root || root) + "/" + qs.escape(path) + "?" + qs.stringify(params),
+      }
+      return request(args, cb);
+    },
 
     metadata: function(path, options, cb){
       var params = sign(options)
